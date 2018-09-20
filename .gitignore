@@ -11,9 +11,13 @@
 .mtj.tmp/
 
 # Package Files #
+<<<<<<< HEAD
 *.jar
 *.war
 *.nar
+=======
+*.war
+>>>>>>> 2018-09-20 commit
 *.ear
 *.zip
 *.tar.gz
@@ -21,3 +25,41 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+<<<<<<< HEAD
+=======
+
+#eclipse ignore
+.settings/
+.project
+.classpath
+.keep
+.tern-project
+
+#package file
+*.war
+*.ear
+
+#idea
+.idea/
+/idea/
+*.ipr
+*.iml
+*.iws
+out/
+classes/
+target/
+
+#temp file
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+#system ignore
+.DS_Store
+Thumbs.db
+
+db/
+doc/
+>>>>>>> 2018-09-20 commit
