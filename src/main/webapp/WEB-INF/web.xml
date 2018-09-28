@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <display-name>Archetype Created Web Application</display-name>
+    <display-name>Permission Web Application</display-name>
 
     <!--Spring Config begin-->
     <!--当Web容器启动时，自动装配Spring applicationContext.xml中配置的信息-->

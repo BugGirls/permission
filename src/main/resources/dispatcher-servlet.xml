@@ -13,6 +13,7 @@
     <!--1.开启SpringMVC注解模式-->
     <mvc:annotation-driven/>
 
+    <!--注册拦截器-->
     <mvc:interceptors>
         <bean class="com.empress.common.HttpInterceptor"/>
     </mvc:interceptors>
