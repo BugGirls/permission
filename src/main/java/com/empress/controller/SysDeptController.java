@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 部门管理
+ * 系统部门管理
  *
  * @author Hystar
  * @date 2018/9/6

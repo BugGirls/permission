@@ -46,6 +46,8 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         log.info("请求结束，进入postHandle()方法");
+        // 移除进程
+        removeThreadLocalInfo();
     }
 
     /**
@@ -60,5 +62,14 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         log.info("请求结束，进入afterCompletion()方法");
+        // 移除进程
+        removeThreadLocalInfo();
+    }
+
+    /**
+     * 移除进程
+     */
+    public void removeThreadLocalInfo() {
+        RequestHolder.remove();
     }
 }

@@ -25,14 +25,14 @@ public class UserParam {
     /**
      * 用户名称
      */
-    @NotBlank(message = "用户名不可以为空")
-    @Length(min = 0, max = 32, message = "用户名长度需要在20个字以内")
+    @NotBlank(message = "用户名不能为空")
+    @Length(min = 0, max = 20, message = "用户名长度需要在20个字以内")
     private String username;
 
     /**
      * 手机号
      */
-    @NotBlank(message = "手机号不可以为空")
+    @NotBlank(message = "手机号不能为空")
     @Length(min = 1, max = 13, message = "手机号的长度需要在13个字以内")
     private String telephone;
 
@@ -60,7 +60,7 @@ public class UserParam {
     /**
      * 备注
      */
-    @Length(max = 150, message = "备注的长度不能超过150个字")
+    @Length(max = 100, message = "备注的长度不能超过100个字")
     private String remark;
 
 }

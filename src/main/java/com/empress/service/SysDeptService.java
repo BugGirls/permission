@@ -1,10 +1,12 @@
 package com.empress.service;
 
+import com.empress.common.RequestHolder;
 import com.empress.dao.SysDeptMapper;
 import com.empress.exception.ParamException;
 import com.empress.param.DeptParam;
 import com.empress.pojo.SysDept;
 import com.empress.util.BeanValidator;
+import com.empress.util.IpUtil;
 import com.empress.util.LevelUtil;
 import com.google.common.base.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
@@ -16,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 部门 Service
+ *
  * @author Hystar
  * @date 2018/9/6
  */
@@ -43,8 +47,8 @@ public class SysDeptService {
         SysDept sysDept = SysDept.builder().name(deptParam.getName()).parentId(deptParam.getParentId()).seq(deptParam.getSeq()).remark(deptParam.getRemark()).build();
         // 计算level
         sysDept.setLevel(LevelUtil.calculateLevel(getLevel(deptParam.getParentId()), deptParam.getParentId()));
-        sysDept.setOperator("system");
-        sysDept.setOperateIp("127.0.0.1");
+        sysDept.setOperator(RequestHolder.getCurrentUser().getUsername());
+        sysDept.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysDept.setOperateTime(new Date());
         sysDeptMapper.insertSelective(sysDept);
     }
@@ -71,8 +75,8 @@ public class SysDeptService {
         // 更新后的部门
         SysDept after = SysDept.builder().id(deptParam.getId()).name(deptParam.getName()).parentId(deptParam.getParentId()).seq(deptParam.getSeq()).remark(deptParam.getRemark()).build();
         after.setLevel(LevelUtil.calculateLevel(getLevel(deptParam.getParentId()), deptParam.getParentId()));
-        after.setOperator("system-update");
-        after.setOperateIp("127.0.0.1");
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperateTime(new Date());
 
         updateWithChild(before, after);

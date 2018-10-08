@@ -1,10 +1,14 @@
 package com.empress.service;
 
+import com.empress.beans.PageQuery;
+import com.empress.beans.PageResult;
+import com.empress.common.RequestHolder;
 import com.empress.dao.SysUserMapper;
 import com.empress.exception.ParamException;
 import com.empress.param.UserParam;
 import com.empress.pojo.SysUser;
 import com.empress.util.BeanValidator;
+import com.empress.util.IpUtil;
 import com.empress.util.MD5Util;
 import com.empress.util.PasswordUtil;
 import com.google.common.base.Preconditions;
@@ -12,10 +16,11 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hystar
- * @date 2018/9/30 0030
+ * @date 2018/9/30
  */
 @Service
 public class SysUserService {
@@ -34,7 +39,7 @@ public class SysUserService {
         // 验证传入的用户参数
         BeanValidator.check(userParam);
 
-        // 检查手机号和邮箱是否存在
+        // 检查手机号和邮箱是否存在，传入ID是为了在更新的时候也可以用此方法进行校验
         if (checkTelephoneExist(userParam.getTelephone(), userParam.getId())) {
             throw new ParamException("手机号已存在");
         }
@@ -43,13 +48,14 @@ public class SysUserService {
         }
 
         // 密码由系统生成，并发送到所填写的邮箱地址
+        // TODO: 2018/10/8  使用系统生成的密码
         String password = PasswordUtil.randomPassword();
         password = "123456";
         String encryptedPassword = MD5Util.encrypt(password);
         SysUser sysUser = SysUser.builder().username(userParam.getUsername()).telephone(userParam.getTelephone()).mail(userParam.getMail())
                 .password(encryptedPassword).deptId(userParam.getDeptId()).status(userParam.getStatus()).remark(userParam.getRemark()).build();
-        sysUser.setOperator("system");
-        sysUser.setOperateIp("127.0.0.1");
+        sysUser.setOperator(RequestHolder.getCurrentUser().getUsername());
+        sysUser.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysUser.setOperateTime(new Date());
 
         // todo 发送邮箱
@@ -67,7 +73,7 @@ public class SysUserService {
         // 验证传入的用户参数
         BeanValidator.check(userParam);
 
-        // 检查手机号和邮箱是否存在
+        // 检查手机号和邮箱是否存在，传入ID是为了在更新的时候也可以用此方法进行校验
         if (checkTelephoneExist(userParam.getTelephone(), userParam.getId())) {
             throw new ParamException("手机号已存在");
         }
@@ -80,7 +86,29 @@ public class SysUserService {
 
         SysUser after = SysUser.builder().id(userParam.getId()).username(userParam.getUsername()).telephone(userParam.getTelephone()).mail(userParam.getMail())
                 .deptId(userParam.getDeptId()).status(userParam.getStatus()).remark(userParam.getRemark()).build();
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        after.setOperateTime(new Date());
+
         sysUserMapper.updateByPrimaryKeySelective(after);
+    }
+
+    /**
+     * 获取指定部门下用户分页信息列表
+     *
+     * @param deptId
+     * @param pageQuery
+     * @return
+     */
+    public PageResult<SysUser> getPageByDeptId(int deptId, PageQuery pageQuery) {
+        BeanValidator.check(pageQuery);
+
+        int count = sysUserMapper.countByDeptId(deptId);
+        if (count > 0) {
+            List<SysUser> sysUserList = sysUserMapper.getPageByDeptId(deptId, pageQuery);
+            return PageResult.<SysUser>builder().total(count).data(sysUserList).build();
+        }
+        return PageResult.<SysUser>builder().build();
     }
 
     /**
@@ -91,7 +119,7 @@ public class SysUserService {
      * @return
      */
     public boolean checkEmailExist(String mail, Integer userId) {
-        return false;
+        return sysUserMapper.countByMail(mail, userId) > 0;
     }
 
     /**
@@ -102,10 +130,16 @@ public class SysUserService {
      * @return
      */
     public boolean checkTelephoneExist(String telephone, Integer userId) {
-        return false;
+        return sysUserMapper.countByMail(telephone, userId) > 0;
     }
 
+    /**
+     * 通过关键字获取用户信息，关键字为手机号或邮箱
+     *
+     * @param keyword
+     * @return
+     */
     public SysUser findByKeyword(String keyword) {
-        return null;
+        return sysUserMapper.findByKeyword(keyword);
     }
 }

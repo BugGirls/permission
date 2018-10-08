@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.security.MessageDigest;
 
 /**
+ * MD5工具类
+ *
  * @author Hystar
  * @date 2018/9/30
  */

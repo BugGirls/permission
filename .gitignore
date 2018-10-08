@@ -11,22 +11,14 @@
 .mtj.tmp/
 
 # Package Files #
-<<<<<<< HEAD
 *.jar
 *.war
 *.nar
-=======
 *.war
->>>>>>> 2018-09-20 commit
 *.ear
 *.zip
 *.tar.gz
 *.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-<<<<<<< HEAD
-=======
 
 #eclipse ignore
 .settings/
@@ -62,4 +54,3 @@ Thumbs.db
 
 db/
 doc/
->>>>>>> 2018-09-20 commit
