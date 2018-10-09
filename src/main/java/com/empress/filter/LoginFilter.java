@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 登录过滤器
+ * 登录过滤器，判断用户是否登录
  *
  * @author Hystar
  * @date 2018/10/8
