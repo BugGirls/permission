@@ -1,9 +1,11 @@
 package com.empress.service;
 
 import com.empress.common.RequestHolder;
+import com.empress.dao.SysAclMapper;
 import com.empress.dao.SysAclModuleMapper;
 import com.empress.exception.ParamException;
 import com.empress.param.AclModuleParam;
+import com.empress.pojo.SysAcl;
 import com.empress.pojo.SysAclModule;
 import com.empress.util.BeanValidator;
 import com.empress.util.IpUtil;
@@ -28,6 +30,9 @@ public class SysAclModuleService {
 
     @Resource
     private SysAclModuleMapper sysAclModuleMapper;
+
+    @Resource
+    private SysAclMapper sysAclMapper;
 
     /**
      * 新增权限模块
@@ -90,7 +95,7 @@ public class SysAclModuleService {
      * @param after
      */
     @Transactional(rollbackFor = Exception.class)
-    private void updateWithChild(SysAclModule before, SysAclModule after) {
+    public void updateWithChild(SysAclModule before, SysAclModule after) {
         String newLevelPrefix = after.getLevel();
         String oldLevelPrefix = before.getLevel();
         // 如果当前层级与之前的层级不一致，说明修改了权限模块的层级，则需要做子模块层级的更新
@@ -110,6 +115,30 @@ public class SysAclModuleService {
         }
 
         sysAclModuleMapper.updateByPrimaryKeySelective(after);
+    }
+
+    /**
+     * 删除权限模块信息
+     *
+     * @param aclModuleId
+     */
+    public void delete(int aclModuleId) {
+        // 数据校验
+        SysAclModule sysAclModule = sysAclModuleMapper.selectByPrimaryKey(aclModuleId);
+        Preconditions.checkNotNull(sysAclModule, "待删除的权限模块不存在，无法删除");
+
+        // 判断是否有子模块
+        if (sysAclModuleMapper.countByParentId(aclModuleId) > 0) {
+            throw new ParamException("当前权限模块下存在子模块，无法删除");
+        }
+
+        // 判断是否有权限点
+        if (sysAclMapper.countByAclModuleId(aclModuleId) > 0) {
+            throw new ParamException("当前权限模块下有权限，无法删除");
+        }
+
+        // 执行删除操作
+        sysAclModuleMapper.deleteByPrimaryKey(aclModuleId);
     }
 
     /**

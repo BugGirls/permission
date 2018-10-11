@@ -3,20 +3,25 @@ package com.empress.service;
 import com.empress.beans.PageQuery;
 import com.empress.beans.PageResult;
 import com.empress.common.RequestHolder;
+import com.empress.dao.SysRoleUserMapper;
 import com.empress.dao.SysUserMapper;
 import com.empress.exception.ParamException;
 import com.empress.param.UserParam;
+import com.empress.pojo.SysRole;
 import com.empress.pojo.SysUser;
 import com.empress.util.BeanValidator;
 import com.empress.util.IpUtil;
 import com.empress.util.MD5Util;
 import com.empress.util.PasswordUtil;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Hystar
@@ -27,6 +32,9 @@ public class SysUserService {
 
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Resource
+    private SysRoleUserMapper sysRoleUserMapper;
 
     /**
      * 新增一个用户
@@ -142,4 +150,33 @@ public class SysUserService {
     public SysUser findByKeyword(String keyword) {
         return sysUserMapper.findByKeyword(keyword);
     }
+
+    /**
+     * 获取所有用户列表
+     *
+     * @return
+     */
+    public List<SysUser> getAll() {
+        return sysUserMapper.getAll();
+    }
+
+    /**
+     * 通过角色列表获取用户列表
+     *
+     * @param sysRoles
+     * @return
+     */
+    public List<SysUser> getUserListByRoleList(List<SysRole> sysRoles) {
+        if (CollectionUtils.isEmpty(sysRoles)) {
+            return Lists.newArrayList();
+        }
+        List<Integer> roleIdList = sysRoles.stream().map(sysRole -> sysRole.getId()).collect(Collectors.toList());
+        List<Integer> userIdList = sysRoleUserMapper.getUserIdListByRoleIdList(roleIdList);
+        if(CollectionUtils.isEmpty(userIdList)) {
+            return Lists.newArrayList();
+        }
+        List<SysUser> sysUserList = sysUserMapper.getByIdList(userIdList);
+        return sysUserList;
+    }
+
 }

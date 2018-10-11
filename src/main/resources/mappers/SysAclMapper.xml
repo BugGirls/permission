@@ -207,4 +207,18 @@
         limit #{pageQuery.offset}, #{pageQuery.pageSize}
     </select>
 
+    <select id="getAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from sys_acl
+    </select>
+
+    <select id="getByIdList" resultMap="BaseResultMap" parameterType="map">
+        select <include refid="Base_Column_List"/>
+        from sys_acl
+        where id in
+        <foreach collection="roleIdList" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+    </select>
+
 </mapper>

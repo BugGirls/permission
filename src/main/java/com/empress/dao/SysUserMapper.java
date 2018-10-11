@@ -67,4 +67,20 @@ public interface SysUserMapper {
      * @return
      */
     List<SysUser> getPageByDeptId(@Param(value = "deptId") int deptId, @Param(value = "pageQuery") PageQuery pageQuery);
+
+    /**
+     * 通过Id列表获取用户列表
+     *
+     * @param idList
+     * @return
+     */
+    List<SysUser> getByIdList(@Param(value = "idList") List<Integer> idList);
+
+    /**
+     * 获取所有用户列表
+     *
+     * @return
+     */
+    List<SysUser> getAll();
+
 }

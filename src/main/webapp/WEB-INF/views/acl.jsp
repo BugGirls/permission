@@ -413,7 +413,20 @@
                         var aclModuleId = $(this).attr('data-id')
                         var aclModuleName = $(this).attr('data-name')
                         if (confirm('确定要删除权限模块【' + aclModuleName + '】吗？')) {
-                            console.log('delete aclModule:' + aclModuleName)
+                            $.ajax({
+                                url : '/sys/aclModule/delete.json',
+                                data : {
+                                    id : aclModuleId
+                                },
+                                success : function(result) {
+                                    if (result.ret) {
+                                        showMessage('删除权限模块[' + aclModuleName + ']', '操作成功', true)
+                                        loadAclModuleTree()
+                                    } else {
+                                        showMessage('删除权限模块[' + aclModuleName + ']', result.msg, false)
+                                    }
+                                }
+                            })
                         }
                     })
 
@@ -559,6 +572,24 @@
 
                 // 绑定权限的点击操作
                 function bindAclClick() {
+                    $('.acl-role').click(function(e) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        var aclId = $(this).attr('data-id')
+                        $.ajax({
+                            url: '/sys/acl/acls.json',
+                            data: {
+                                aclId : aclId
+                            },
+                            success: function (result) {
+                                if (result.ret) {
+                                    console.log(result)
+                                } else {
+                                    showMessage('获取权限点分配的用户和角色', result.msg, false)
+                                }
+                            }
+                        })
+                    })
                     // 修改权限信息
                     $('.acl-edit').click(function(e) {
                         e.preventDefault()

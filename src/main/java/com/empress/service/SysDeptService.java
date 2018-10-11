@@ -2,6 +2,7 @@ package com.empress.service;
 
 import com.empress.common.RequestHolder;
 import com.empress.dao.SysDeptMapper;
+import com.empress.dao.SysUserMapper;
 import com.empress.exception.ParamException;
 import com.empress.param.DeptParam;
 import com.empress.pojo.SysDept;
@@ -28,6 +29,9 @@ public class SysDeptService {
 
     @Resource
     private SysDeptMapper sysDeptMapper;
+
+    @Resource
+    private SysUserMapper sysUserMapper;
 
     /**
      * 新增一个部门
@@ -83,13 +87,37 @@ public class SysDeptService {
     }
 
     /**
+     * 删除部门信息
+     *
+     * @param deptId
+     */
+    public void delete(int deptId) {
+        // 数据校验
+        SysDept sysDept = sysDeptMapper.selectByPrimaryKey(deptId);
+        Preconditions.checkNotNull(sysDept, "待删除的部门不存在，无法删除");
+
+        // 判断是否有子部门
+        if (sysDeptMapper.countByParentId(sysDept.getId()) > 0) {
+            throw new ParamException("当前部门下存在子部门，无法删除");
+        }
+
+        // 判断是否有用户
+        if (sysUserMapper.countByDeptId(deptId) > 0) {
+            throw new ParamException("当前部门下有用户，无法删除");
+        }
+
+        // 执行删除操作
+        sysDeptMapper.deleteByPrimaryKey(deptId);
+    }
+
+    /**
      * 更新子部门层级信息
      *
      * @param before
      * @param after
      */
     @Transactional(rollbackFor = Exception.class)
-    private void updateWithChild(SysDept before, SysDept after) {
+    public void updateWithChild(SysDept before, SysDept after) {
         String newLevelPrefix = after.getLevel();
         String oldLevelPrefix = before.getLevel();
         // 如果当前层级与之前的层级不一致，说明修改了部门层级，则需要做子部门层级的更新

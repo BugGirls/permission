@@ -51,4 +51,19 @@ public interface SysAclMapper {
      * @return
      */
     List<SysAcl> getPageByAclModuleId(@Param(value = "aclModuleId") Integer aclModuleId, @Param(value = "pageQuery") PageQuery pageQuery);
+
+    /**
+     * 获取所有权限
+     *
+     * @return
+     */
+    List<SysAcl> getAll();
+
+    /**
+     * 通过权限ID列表 获取权限列表
+     *
+     * @param roleIdList
+     * @return
+     */
+    List<SysAcl> getByIdList(@Param(value = "roleIdList") List<Integer> roleIdList);
 }

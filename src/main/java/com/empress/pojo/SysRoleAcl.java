@@ -1,14 +1,23 @@
 package com.empress.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
+ * 角色-权限
+ *
  * @author Hystar
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SysRoleAcl {
+
     private Integer id;
 
     private Integer roleId;
@@ -20,18 +29,5 @@ public class SysRoleAcl {
     private Date operateTime;
 
     private String operateIp;
-
-    public SysRoleAcl(Integer id, Integer roleId, Integer aclId, String operator, Date operateTime, String operateIp) {
-        this.id = id;
-        this.roleId = roleId;
-        this.aclId = aclId;
-        this.operator = operator;
-        this.operateTime = operateTime;
-        this.operateIp = operateIp;
-    }
-
-    public SysRoleAcl() {
-        super();
-    }
 
 }

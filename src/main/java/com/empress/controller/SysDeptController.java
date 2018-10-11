@@ -8,6 +8,7 @@ import com.empress.service.SysTreeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -76,6 +77,19 @@ public class SysDeptController {
     @ResponseBody
     public JsonData updateDept(DeptParam deptParam) {
         sysDeptService.update(deptParam);
+        return JsonData.success();
+    }
+
+    /**
+     * 删除部门信息
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/delete.json")
+    @ResponseBody
+    public JsonData deleteDept(@RequestParam(value = "id") Integer id) {
+        sysDeptService.delete(id);
         return JsonData.success();
     }
 }

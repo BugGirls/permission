@@ -57,4 +57,12 @@ public interface SysDeptMapper {
      * @return
      */
     int countByNameAndParentId(@Param(value = "parentId") Integer parentId, @Param(value = "name") String name, @Param(value = "id") Integer id);
+
+    /**
+     * 计算当前上级部门的数量
+     *
+     * @param parentId
+     * @return
+     */
+    int countByParentId(@Param(value = "parentId") Integer parentId);
 }

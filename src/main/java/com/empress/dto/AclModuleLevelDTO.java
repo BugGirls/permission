@@ -16,7 +16,15 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class AclModuleLevelDTO extends SysAclModule {
 
+    /**
+     * 当前权限模块的下级权限模块列表
+     */
     private List<AclModuleLevelDTO> aclModuleLevelDTOList = Lists.newArrayList();
+
+    /**
+     * 当前权限模块下的权限列表
+     */
+    private List<AclDTO> aclDTOList = Lists.newArrayList();
 
     /**
      * 将父类SysAclModule 中的属性值拷贝到子类AclModuleLevelDTO 对象中

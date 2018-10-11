@@ -51,5 +51,19 @@ public interface SysAclModuleMapper {
      */
     void batchUpdateLevel(@Param(value = "sysAclModuleList") List<SysAclModule> sysAclModuleList);
 
+    /**
+     * 获取全部的权限模块记录
+     *
+     * @return
+     */
     List<SysAclModule> getAllAclModule();
+
+    /**
+     * 计算当前权限模块的下级模块的数量
+     *
+     * @param aclModuleId
+     * @return
+     */
+    int countByParentId(@Param(value = "aclModuleId") Integer aclModuleId);
+
 }

@@ -8,6 +8,7 @@ import com.empress.service.SysTreeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -79,5 +80,16 @@ public class SysAclModuleController {
         return JsonData.success();
     }
 
-
+    /**
+     * 删除权限模块
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/delete.json")
+    @ResponseBody
+    public JsonData deleteAclModule(@RequestParam(value = "id") Integer id) {
+        sysAclModuleService.delete(id);
+        return JsonData.success();
+    }
 }
