@@ -33,6 +33,9 @@ public class SysDeptService {
     @Resource
     private SysUserMapper sysUserMapper;
 
+    @Resource
+    private SysLogService sysLogService;
+
     /**
      * 新增一个部门
      *
@@ -55,6 +58,9 @@ public class SysDeptService {
         sysDept.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysDept.setOperateTime(new Date());
         sysDeptMapper.insertSelective(sysDept);
+
+        //
+        sysLogService.saveDeptLogLog(null, sysDept);
     }
 
     /**
@@ -84,6 +90,9 @@ public class SysDeptService {
         after.setOperateTime(new Date());
 
         updateWithChild(before, after);
+
+        //
+        sysLogService.saveDeptLogLog(before, after);
     }
 
     /**

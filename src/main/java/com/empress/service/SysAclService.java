@@ -27,6 +27,9 @@ public class SysAclService {
     @Resource
     private SysAclMapper sysAclMapper;
 
+    @Resource
+    private SysLogService sysLogService;
+
     /**
      * 新增权限信息
      *
@@ -51,6 +54,8 @@ public class SysAclService {
         sysAcl.setOperateTime(new Date());
 
         sysAclMapper.insertSelective(sysAcl);
+
+        sysLogService.saveAclLog(null, sysAcl);
     }
 
     /**
@@ -79,6 +84,8 @@ public class SysAclService {
         after.setOperateTime(new Date());
 
         sysAclMapper.updateByPrimaryKeySelective(after);
+
+        sysLogService.saveAclLog(before, after);
     }
 
     /**

@@ -32,6 +32,9 @@ public class SysRoleUserService {
     @Resource
     private SysUserMapper sysUserMapper;
 
+    @Resource
+    private SysLogService sysLogService;
+
     /**
      * 获取当前角色所对应的用户列表
      *
@@ -70,6 +73,8 @@ public class SysRoleUserService {
 
         // 更新操作
         updateRoleUsers(roleId, userIdList);
+
+        sysLogService.saveRoleUserLog(roleId, originUserIdList, userIdList);
     }
 
     /**

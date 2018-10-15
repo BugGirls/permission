@@ -5,12 +5,16 @@ import com.empress.dao.SysAclMapper;
 import com.empress.dao.SysRoleAclMapper;
 import com.empress.dao.SysRoleUserMapper;
 import com.empress.pojo.SysAcl;
+import com.empress.pojo.SysUser;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 获取相关角色和权限
@@ -93,6 +97,60 @@ public class SysCoreService {
      * @return
      */
     public boolean isSuperAdmin() {
-        return true;
+        // 这里定义了一个测试的超级管理员规则，实际中要根据项目进行修改，可以是配置文件获取，页可以指定某个用户，页可以指定某个角色
+        SysUser sysUser = RequestHolder.getCurrentUser();
+        if (sysUser.getMail().contains("admin")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 获取当前登录用户是否有权限访问当前URL
+     *
+     * @param url
+     * @return
+     */
+    public boolean hasUrlAcl(String url) {
+        // 判断是否为超级管理员
+        if (isSuperAdmin()) {
+            return true;
+        }
+
+        // 获取当前URL对应的权限点
+        List<SysAcl> aclList = sysAclMapper.getByUrl(url);
+        if (CollectionUtils.isEmpty(aclList)) {
+            // 如果没有权限点，说明该URL不做验证
+            return true;
+        }
+
+        // 获取当前登录用户的权限列表
+        List<SysAcl> userAclList = getCurrentUserAclList();
+        // 权限ID集合
+        Set<Integer> userAclIdSet = userAclList.stream().map(sysAcl -> sysAcl.getId()).collect(Collectors.toSet());
+
+        // 权限是否有效标志
+        boolean hasValidAcl = false;
+        // 规则：只要有一个权限点有权限，那么我们就认为有访问权限
+        for (SysAcl sysAcl : aclList) {
+            // 判断一个用户是否具有某个权限点的访问权限
+            if (sysAcl == null || sysAcl.getStatus() != 1) {
+                // 权限点无效
+                continue;
+            }
+            hasValidAcl = true;
+            // 有效
+            if (userAclIdSet.contains(sysAcl.getId())) {
+                return true;
+            }
+
+        }
+
+        // 如果所有权限都无效，则返回true
+        if (!hasValidAcl) {
+            return true;
+        }
+
+        return false;
     }
 }

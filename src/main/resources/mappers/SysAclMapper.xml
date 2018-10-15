@@ -34,7 +34,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.empress.pojo.SysAcl">
+    <insert id="insert" parameterType="com.empress.pojo.SysAcl" keyProperty="id" useGeneratedKeys="true">
         insert into sys_acl (id, code, name,
           acl_module_id, url, type,
           status, seq, remark,
@@ -47,7 +47,7 @@
           )
     </insert>
 
-    <insert id="insertSelective" parameterType="com.empress.pojo.SysAcl">
+    <insert id="insertSelective" parameterType="com.empress.pojo.SysAcl" keyProperty="id" useGeneratedKeys="true">
         insert into sys_acl
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -219,6 +219,13 @@
         <foreach collection="roleIdList" item="roleId" open="(" close=")" separator=",">
             #{roleId}
         </foreach>
+    </select>
+
+    <select id="getByUrl" parameterType="map" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from sys_acl
+        where url = #{url}
+        <!-- url is not null and url != '' and #{url} REGEXP url -->
     </select>
 
 </mapper>

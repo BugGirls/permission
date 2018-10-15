@@ -608,6 +608,7 @@
                         })
                     })
 
+                    // 获取用户权限数据
                     $('.user-acl').click(function(e) {
                         e.preventDefault()
                         e.stopPropagation()
@@ -620,6 +621,7 @@
                             success: function (result) {
                                 if (result.ret) {
                                     console.log(result)
+
                                 } else {
                                     showMessage('获取用户权限数据', result.msg, false)
                                 }

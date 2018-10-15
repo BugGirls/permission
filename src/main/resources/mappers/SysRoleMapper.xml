@@ -30,7 +30,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.empress.pojo.SysRole">
+    <insert id="insert" parameterType="com.empress.pojo.SysRole" keyProperty="id" useGeneratedKeys="true">
         insert into sys_role (id, name, type,
           status, remark, operator,
           operate_time, operate_ip)
@@ -39,7 +39,7 @@
           #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR})
     </insert>
 
-    <insert id="insertSelective" parameterType="com.empress.pojo.SysRole">
+    <insert id="insertSelective" parameterType="com.empress.pojo.SysRole" keyProperty="id" useGeneratedKeys="true">
         insert into sys_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

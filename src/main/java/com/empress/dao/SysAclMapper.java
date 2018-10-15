@@ -66,4 +66,6 @@ public interface SysAclMapper {
      * @return
      */
     List<SysAcl> getByIdList(@Param(value = "roleIdList") List<Integer> roleIdList);
+
+    List<SysAcl> getByUrl(@Param(value = "url") String url);
 }

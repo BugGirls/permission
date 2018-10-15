@@ -33,7 +33,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.empress.pojo.SysAclModule">
+    <insert id="insert" parameterType="com.empress.pojo.SysAclModule" keyProperty="id" useGeneratedKeys="true">
         insert into sys_acl_module (id, name, parent_id,
           level, status, seq,
           remark, operator, operate_time,
@@ -44,7 +44,7 @@
           #{operateIp,jdbcType=VARCHAR})
     </insert>
 
-    <insert id="insertSelective" parameterType="com.empress.pojo.SysAclModule">
+    <insert id="insertSelective" parameterType="com.empress.pojo.SysAclModule" keyProperty="id" useGeneratedKeys="true">
         insert into sys_acl_module
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

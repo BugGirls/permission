@@ -27,17 +27,18 @@
     delete from sys_dept
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.empress.pojo.SysDept">
-    insert into sys_dept (id, name, parent_id, 
-      level, seq, remark, 
-      operator, operate_time, operate_ip
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
-      #{level,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{operator,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR}
-      )
-  </insert>
-    <insert id="insertSelective" parameterType="com.empress.pojo.SysDept">
+    <insert id="insert" parameterType="com.empress.pojo.SysDept" keyProperty="id" useGeneratedKeys="true">
+        insert into sys_dept (id, name, parent_id,
+          level, seq, remark,
+          operator, operate_time, operate_ip
+          )
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER},
+          #{level,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+          #{operator,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR}
+          )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.empress.pojo.SysDept" keyProperty="id" useGeneratedKeys="true">
         insert into sys_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -142,12 +143,14 @@
   </update>
 
     <select id="getAllDept" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from sys_dept
     </select>
 
     <select id="getChildDeptListByLevel" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from sys_dept
         WHERE level like #{level} || '.%'
     </select>

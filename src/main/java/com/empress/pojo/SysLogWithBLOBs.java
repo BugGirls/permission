@@ -2,7 +2,11 @@ package com.empress.pojo;
 
 import java.util.Date;
 
+/**
+ * @author Hystar
+ */
 public class SysLogWithBLOBs extends SysLog {
+
     private String oldValue;
 
     private String newValue;

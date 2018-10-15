@@ -39,7 +39,7 @@
 <script src="/assets/js/jquery-ui.min.js"></script>
 <script src="/assets/js/jquery.gritter.min.js"></script>
 <script src="/assets/js/chosen.jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/mustache.js/2.2.1/mustache.js"></script>
+<script src="/assets/js/mustache-2.2.1.min.js"></script>
 <script src="/bootstrap3.3.5/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">

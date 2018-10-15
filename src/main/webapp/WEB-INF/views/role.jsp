@@ -425,7 +425,7 @@
                         type: 'POST',
                         success: function (result) {
                             if (result.ret) {
-                                showMessage("保存角色与权限点的关系", "操作成功", false)
+                                showMessage("保存角色与权限点的关系", "操作成功", true)
                             } else {
                                 showMessage("保存角色与权限点的关系", result.msg, false)
                             }
@@ -507,7 +507,7 @@
                         type: 'POST',
                         success: function (result) {
                             if (result.ret) {
-                                showMessage("保存角色与用户的关系", "操作成功", false);
+                                showMessage("保存角色与用户的关系", "操作成功", true);
                             } else {
                                 showMessage("保存角色与用户的关系", result.msg, false);
                             }

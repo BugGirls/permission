@@ -5,7 +5,6 @@ import com.empress.dao.SysAclMapper;
 import com.empress.dao.SysAclModuleMapper;
 import com.empress.exception.ParamException;
 import com.empress.param.AclModuleParam;
-import com.empress.pojo.SysAcl;
 import com.empress.pojo.SysAclModule;
 import com.empress.util.BeanValidator;
 import com.empress.util.IpUtil;
@@ -34,6 +33,9 @@ public class SysAclModuleService {
     @Resource
     private SysAclMapper sysAclMapper;
 
+    @Resource
+    private SysLogService sysLogService;
+
     /**
      * 新增权限模块
      *
@@ -57,6 +59,8 @@ public class SysAclModuleService {
         sysAclModule.setOperateTime(new Date());
 
         sysAclModuleMapper.insertSelective(sysAclModule);
+
+        sysLogService.saveAclModuleLog(null, sysAclModule);
     }
 
     /**
@@ -86,6 +90,8 @@ public class SysAclModuleService {
 
         // 更新子模块层级信息
         updateWithChild(before, after);
+
+        sysLogService.saveAclModuleLog(before, after);
     }
 
     /**

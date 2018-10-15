@@ -36,6 +36,9 @@ public class SysUserService {
     @Resource
     private SysRoleUserMapper sysRoleUserMapper;
 
+    @Resource
+    private SysLogService sysLogService;
+
     /**
      * 新增一个用户
      * 手机号和邮箱为登录名，不能重复，姓名可以重复
@@ -70,6 +73,8 @@ public class SysUserService {
 
         // 当邮件发送成功后，持久化到数据库
         sysUserMapper.insertSelective(sysUser);
+
+        sysLogService.saveUserLog(null, sysUser);
     }
 
     /**
@@ -99,6 +104,8 @@ public class SysUserService {
         after.setOperateTime(new Date());
 
         sysUserMapper.updateByPrimaryKeySelective(after);
+
+        sysLogService.saveUserLog(before, after);
     }
 
     /**
